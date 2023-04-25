@@ -3,7 +3,7 @@ name: Main
 on:
   push:
     paths:
-      - .github/**
+      - .github/workflows/**
 
 jobs:
   get_affected_apps:
@@ -20,6 +20,6 @@ jobs:
     strategy:
       matrix:
         app-name: ${{ needs.get_affected_apps.outputs.matrix }}
-    uses: crgeary/test-workflows/.github/workflows/deployment.yml@main
+    uses: crgeary/test-workflows/.github/workflows/deployment.yaml@main
     with:
       app-name: ${{ matrix.value }}
