@@ -1,0 +1,25 @@
+name: Main
+
+on:
+  push:
+    paths:
+      - .github/**
+
+jobs:
+  get_affected_apps:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.sets-matrix-output.outputs.value }}
+    steps:
+      - id: sets-matrix-output
+        name: Set matrix output
+        run: |
+          echo "value=redemption" >> $GITHUB_OUTPUT
+
+  deploy:
+    strategy:
+      matrix:
+        app-name: ${{ needs.get_affected_apps.outputs.matrix }}
+    uses: crgeary/test-workflows/.github/workflows/deployment.yml@main
+    with:
+      app-name: ${{ matrix.value }}
