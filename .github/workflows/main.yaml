@@ -6,17 +6,15 @@ on:
       - .github/workflows/**
 
 jobs:
-  get_affected_apps:
+  job1:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.sets-matrix-output.outputs.value }}
+      output1: ${{ steps.step1.outputs.test }}
     steps:
-      - id: sets-matrix-output
-        name: Set matrix output
-        run: |
-          echo "value=redemption" >> $GITHUB_OUTPUT
+      - id: step1
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
 
   deploy:
     uses: crgeary/test-workflows/.github/workflows/deployment.yaml@main
     with:
-      app-name: ${{ needs.get_affected_apps.outputs.matrix }}
+      app-name: ${{ needs.job1.outputs.output1 }}
