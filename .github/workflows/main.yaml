@@ -17,9 +17,6 @@ jobs:
           echo "value=redemption" >> $GITHUB_OUTPUT
 
   deploy:
-    strategy:
-      matrix:
-        app-name: ${{ needs.get_affected_apps.outputs.matrix }}
     uses: crgeary/test-workflows/.github/workflows/deployment.yaml@main
     with:
-      app-name: ${{ matrix.value }}
+      app-name: ${{ needs.get_affected_apps.outputs.matrix }}
