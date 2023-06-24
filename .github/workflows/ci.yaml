@@ -22,4 +22,4 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: echo "${{ github.base_ref }}"
+      - run: echo "${{ github.ref }}"
