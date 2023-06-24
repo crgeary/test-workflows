@@ -22,4 +22,5 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: echo "${{ github.ref }}"
+      - run: echo "${{ github.push.base_ref }}"
+      - run: echo "${{ github.event.pull_request.base.ref }}"
