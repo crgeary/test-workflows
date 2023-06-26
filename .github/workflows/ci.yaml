@@ -19,4 +19,4 @@ jobs:
           node-version: 16
       - uses: crgeary/setup-zx@main
       - run: |
-          echo "..."
+          zx ./scripts/deploy.mjs
