@@ -28,7 +28,7 @@ jobs:
     needs: diff
     strategy:
       matrix:
-        app-name: needs.diff.outputs.apps
+        app-name: ${{ needs.diff.outputs.apps }}
     steps:
       - run: echo ${{ matrix.app-name }}
       
