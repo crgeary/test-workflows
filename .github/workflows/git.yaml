@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{ github.pull_request.base }}
+          echo ${{ toJson(github.pull_request.base) }}
           echo "----"
-          echo ${{ github.pull_request.head }}
+          echo ${{ toJson(github.pull_request.head) }}
