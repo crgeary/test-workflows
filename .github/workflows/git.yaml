@@ -14,9 +14,7 @@ jobs:
           fetch-depth: 0
       - id: diff
         run: |
-          apps=$(git diff --dirstat=files,0 ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
-            -- apps/ | sed -E 's/^[ 0-9.]+% //g' | sed -E 's/apps\/([a-z0-9\-]+)\/.*$/\1/g'| awk '!seen[$0]++')
-          
+          apps=$(git diff --dirstat=files,0 ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} -- apps/ | sed -E 's/^[ 0-9.]+% //g' | sed -E 's/apps\/([a-z0-9\-]+)\/.*$/\1/g'| awk '!seen[$0]++')
           echo "apps=\"$apps\"" >> $GITHUB_OUTPUT
   deploy:
     runs-on: ubuntu-latest
