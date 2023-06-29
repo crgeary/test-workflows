@@ -46,4 +46,4 @@ jobs:
       matrix:
         app-name: ${{ fromJson(needs.diff.outputs.apps) }}
     steps:
-      - run: echo ${{ matrix.app-name }}
+      - run: echo ${{ matrix.app-name }} to ${{ needs.branch.outputs.name }}
