@@ -10,8 +10,22 @@ on:
       - synchronize
 
 jobs:
-  diff:
+  check:
     if: contains(github.event.pull_request.labels.*.name, 'preview')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 1
+
+  branch:
+    needs: check
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.name.outputs.name }}
+    steps:
+      - run: echo "name=example" >> $GITHUB_OUTPUT
+
+  diff:
+    needs: check
     runs-on: ubuntu-latest
     outputs:
       apps: ${{ steps.diff.outputs.apps }}
@@ -25,7 +39,9 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: diff
+    needs:
+      - branch
+      - diff
     strategy:
       matrix:
         app-name: ${{ fromJson(needs.diff.outputs.apps) }}
