@@ -150,6 +150,7 @@ jobs:
           bash scripts/deploy.sh
       - uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             octokit.rest.repos.createDeployment({
               owner: context.repo.owner,
