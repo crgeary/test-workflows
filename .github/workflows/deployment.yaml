@@ -23,6 +23,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/setup-buildx-action@v2
         id: buildx
+      - uses: actions/cache@v2
+        id: docker-cache
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.APP_NAME}}-${{ env.APP_ENV }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ env.APP_NAME}}-${{ env.APP_ENV }}-
       - uses: docker/metadata-action@v4
         id: meta
         with:
