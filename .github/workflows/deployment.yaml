@@ -29,21 +29,27 @@ jobs:
           images: "crgeary/w-${{ env.APP_NAME }}"
           tags: |
             type=sha,enable=true,prefix=migrations-,format=long
+          labels: maintainer=ABC
+            org.opencontainers.image.title=${{ env.APP_NAME }}
+            org.opencontainers.image.vendor=CrGeary
+      - uses: docker/build-push-action@v4
+        id: build
+        with:
+          cache-from: type=local,sc=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-ne
+          target: production
+          build-args: |
+            APP_NAME=${{ env.APP_NAME }}
+          push: true
+          file: docker/Dockerfile
+          context: .
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - run: |
+          bash scripts/deploy.sh
       - run: |
           echo '${{ toJson(steps.meta.outputs.tags) }}'
           echo '${{ toJson(steps.meta.outputs.labels) }}'
-      # - uses: docker/build-push-action@v4
-      #   id: build
-      #   with:
-      #     cache-from: type=local,sc=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache-ne
-      #     target: production
-      #     build-args: |
-      #       APP_NAME=${{ env.APP_NAME }}
-      #     push: true
-      #     file: docker/Dockerfile
-      #     context: .
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      # - run: |
-      #     bash scripts/deploy.sh
+          echo '${{ toJson(steps.build.outputs.imageid) }}'
+          echo '${{ toJson(steps.build.outputs.digest) }}'
+          echo '${{ toJson(steps.build.outputs.description) }}'
