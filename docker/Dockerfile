@@ -1,4 +1,4 @@
-FROM hello-world:latest
+FROM hello-world:latest as production
 
 ARG APP_NAME=demo
 

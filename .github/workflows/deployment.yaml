@@ -43,7 +43,7 @@ jobs:
         id: build
         with:
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-ne
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
           target: production
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
