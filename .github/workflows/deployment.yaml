@@ -30,7 +30,8 @@ jobs:
           tags: |
             type=sha,enable=true,prefix=migrations-,format=long
       - run: |
-          ${{ steps.meta.outputs.tags }}
+          echo '${{ toJson(steps.meta.outputs.tags) }}'
+          echo '${{ toJson(steps.meta.outputs.labels) }}'
       # - uses: docker/build-push-action@v4
       #   id: build
       #   with:
