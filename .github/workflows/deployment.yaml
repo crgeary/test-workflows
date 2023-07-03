@@ -152,7 +152,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            octokit.rest.repos.createDeployment({
+            github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               repo: context.repo.ref,
