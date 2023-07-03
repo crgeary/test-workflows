@@ -27,6 +27,9 @@ jobs:
         id: meta
         with:
           images: "crgeary/w-blue"
+          flavor: |
+            prefix=migrations
+            suffix=sss
       - run: |
           echo ${{ steps.meta.outputs.tags }}
           echo ${{ steps.meta.outputs.labels }}
