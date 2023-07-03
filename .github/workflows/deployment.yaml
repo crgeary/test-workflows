@@ -33,7 +33,7 @@ jobs:
       - uses: docker/metadata-action@v4
         id: meta
         with:
-          images: "crgeary/w-${{ env.APP_NAME }}"
+          images: "ghcr.io/crgeary/w-${{ env.APP_NAME }}"
           tags: |
             type=sha,enable=true,prefix=migrations-,format=long
           labels: maintainer=ABC
