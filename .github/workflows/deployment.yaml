@@ -26,11 +26,9 @@ jobs:
       - uses: docker/metadata-action@v4
         id: meta
         with:
-          images: "crgeary/w-blue"
-          flavor: |
-            prefix=migrations-
+          images: "crgeary/w-${{ env.APP_NAME }}"
           tags: |
-            type=sha,enable=true,format=long
+            type=sha,enable=true,prefix=migrations-,format=long
       - run: |
           ${{ steps.meta.outputs.tags }}
       # - uses: docker/build-push-action@v4
