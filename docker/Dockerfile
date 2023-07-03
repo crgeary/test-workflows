@@ -1,4 +1,4 @@
-FROM hello-world:latest as production
+FROM node:14.17.3-alpine as production
 
 ARG APP_NAME=demo
 
