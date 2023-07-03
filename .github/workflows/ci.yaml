@@ -7,6 +7,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ABC: '123'
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -19,4 +22,4 @@ jobs:
           node-version: 16
       - uses: crgeary/setup-zx@main
       - run: |
-          zx ./scripts/deploy.mjs
+          bash ./scripts/deploy.sh
