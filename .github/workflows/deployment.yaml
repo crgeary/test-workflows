@@ -28,11 +28,11 @@ jobs:
         with:
           images: "crgeary/w-blue"
           flavor: |
-            prefix=migrations
-            suffix=sss
+            prefix=migrations-
+          tags: |
+            type=sha,enable=true,format=long
       - run: |
-          echo ${{ steps.meta.outputs.tags }}
-          echo ${{ steps.meta.outputs.labels }}
+          ${{ steps.meta.outputs.tags }}
       # - uses: docker/build-push-action@v4
       #   id: build
       #   with:
