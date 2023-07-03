@@ -148,3 +148,11 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           bash scripts/deploy.sh
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            octokit.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              repo: context.repo.ref,
+            });
