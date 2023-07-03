@@ -155,5 +155,5 @@ jobs:
             github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              repo: context.repo.ref,
+              ref: context.ref,
             });
