@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo $ABC
+echo "🚀 Deploying [$APP_NAME] to [$APP_ENV]"
