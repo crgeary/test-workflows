@@ -31,3 +31,5 @@ jobs:
     with:
       app-name: ${{ matrix.app-name }}
       app-environment: "production"
+    permissions:
+      packages: write
