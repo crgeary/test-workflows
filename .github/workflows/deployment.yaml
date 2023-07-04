@@ -50,10 +50,11 @@ jobs:
       - uses: docker/metadata-action@v4
         id: meta
         with:
-          images: "ghcr.io/crgeary/w-${{ env.APP_NAME }}"
+          images: "ghcr.io/crgeary/w-${{ needs.prepare.outputs.app-name }}"
           tags: |
             type=sha,enable=true,format=long
-          labels: org.opencontainers.image.title=${{ env.APP_NAME }}
+          labels:
+            org.opencontainers.image.title=${{ needs.prepare.outputs.app-name }}
             org.opencontainers.image.vendor=CrGeary
       - uses: docker/build-push-action@v4
         id: build
@@ -62,7 +63,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           target: production
           build-args: |
-            APP_NAME=${{ env.APP_NAME }}
+            APP_NAME=${{ needs.prepare.outputs.app-name }}
           push: true
           file: docker/Dockerfile
           context: .
@@ -96,10 +97,11 @@ jobs:
       - uses: docker/metadata-action@v4
         id: meta
         with:
-          images: "ghcr.io/crgeary/w-${{ env.APP_NAME }}"
+          images: "ghcr.io/crgeary/w-${{ needs.prepare.outputs.app-name }}"
           tags: |
             type=sha,enable=true,prefix=migrations-,format=long
-          labels: org.opencontainers.image.title=${{ env.APP_NAME }}
+          labels:
+            org.opencontainers.image.title=${{ needs.prepare.outputs.app-name }}
             org.opencontainers.image.vendor=CrGeary
       - uses: docker/build-push-action@v4
         id: build
@@ -107,7 +109,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           target: production
           build-args: |
-            APP_NAME=${{ env.APP_NAME }}
+            APP_NAME=${{ needs.prepare.outputs.app-name }}
           push: true
           file: docker/Dockerfile
           context: .

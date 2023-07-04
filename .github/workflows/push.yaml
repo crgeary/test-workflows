@@ -33,3 +33,4 @@ jobs:
       app-environment: "production"
     permissions:
       packages: write
+      security-events: write
