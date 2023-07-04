@@ -1,34 +1,25 @@
 name: Deployment
 
 on:
-  push:
+  workflow_call:
+    inputs:
+      app-name:
+        type: string
+        required: true
+      app-environment:
+        type: string
+        required: true
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ inputs.app-environment }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  APP_ENV: production
-  APP_NAME: blue
-
 jobs:
-  diff:
-    runs-on: ubuntu-latest
-    outputs:
-      app-names: ${{ steps.calculate.outputs.app-names }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - id: calculate
-        run: |
-          echo "app-names=$(git diff --name-only ${{ github.event.before }}...${{ github.event.after }} -- apps/ | sed -E 's/apps\/([a-z0-9\-]+)\/.*$/\1/g' | awk '!seen[$0]++' | jq -R -s -c 'split("\n") | map(select(length > 0))')" >> $GITHUB_OUTPUT
-
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ env.APP_ENV }}
-      app-name: ${{ env.APP_NAME }}
+      environment: ${{ inputs.app-environment }}
+      app-name: ${{ inputs.app-name }}
     steps:
       - run: |
 
