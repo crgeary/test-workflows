@@ -1,25 +1,22 @@
 name: Deployment
 
 on:
-  workflow_call:
-    inputs:
-      app-name:
-        type: string
-        required: true
-      app-environment:
-        type: string
-        required: true
+  push:
+
+env:
+  APP_ENV: "production"
+  APP_NAME: "purple"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ inputs.app-environment }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ inputs.app-environment }}
-      app-name: ${{ inputs.app-name }}
+      environment: ${{ env.APP_ENV }}
+      app-name: ${{ env.APP_NAME }}
     steps:
       - run: |
 
@@ -141,7 +138,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.prepare.outputs.environment }}-${{ needs.prepare.outputs.environment }}
+      name: ${{ needs.prepare.outputs.app-name }}-${{ needs.prepare.outputs.environment }}
       url: https://${{ needs.prepare.outputs.app-name }}.${{ needs.prepare.outputs.environment }}.example.com
     needs:
       - prepare
