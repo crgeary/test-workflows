@@ -37,8 +37,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./actions/docker-build
         with:
-          app-name: ${{ needs.prepare.outputs.app-name }}
           app-env: ${{ needs.prepare.outputs.environment }}
+          app-name: ${{ needs.prepare.outputs.app-name }}
+          dockerfile: docker/Dockerfile
+          target: production
 
   build-migrations:
     runs-on: ubuntu-latest

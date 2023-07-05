@@ -4,6 +4,10 @@ inputs:
     required: true
   app-env:
     required: true
+  dockerfile:
+    default: docker/Dockerfile
+  target:
+    default: production
 outputs:
   tags:
     value: ${{ steps.meta.outputs.tags }}
@@ -26,19 +30,19 @@ runs:
       with:
         images: "ghcr.io/crgeary/w-${{ inputs.app-name }}"
         tags: |
-          type=sha,enable=true,format=long
+          type=sha,enable=true,prefix=${{ inputs.target == "migrations" && "migrations-" || "" }},format=long
         labels: org.opencontainers.image.title=${{ inputs.app-name }}
           org.opencontainers.image.vendor=CrGeary
     - id: build
       uses: docker/build-push-action@v4
       with:
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new
-        target: production
+        cache-to: ${{ inputs.target == "migrations" && "type=local,dest=/tmp/.buildx-cache-new" || null }}
+        target: ${{ inputs.target }}
         build-args: |
           APP_NAME=${{ inputs.app-name }}
         push: true
-        file: docker/Dockerfile
+        file: ${{ inputs.dockerfile }}
         context: .
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
