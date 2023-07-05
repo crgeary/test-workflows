@@ -37,7 +37,7 @@ runs:
       uses: docker/build-push-action@v4
       with:
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: ${{ inputs.target == 'production' && type=local,dest=/tmp/.buildx-cache-new || '' }}
+        cache-to: ${{ inputs.target == 'production' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
         target: ${{ inputs.target }}
         build-args: |
           APP_NAME=${{ inputs.app-name }}
