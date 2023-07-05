@@ -30,14 +30,14 @@ runs:
       with:
         images: "ghcr.io/crgeary/w-${{ inputs.app-name }}"
         tags: |
-          type=sha,enable=true,prefix=${{ inputs.target == "migrations" && "migrations-" || "" }},format=long
+          type=sha,enable=true,prefix=${{ inputs.target == "migrations" && migrations- || "" }},format=long
         labels: org.opencontainers.image.title=${{ inputs.app-name }}
           org.opencontainers.image.vendor=CrGeary
     - id: build
       uses: docker/build-push-action@v4
       with:
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: ${{ inputs.target == "migrations" && "type=local,dest=/tmp/.buildx-cache-new" || null }}
+        cache-to: ${{ inputs.target == "migrations" && type=local,dest=/tmp/.buildx-cache-new || null }}
         target: ${{ inputs.target }}
         build-args: |
           APP_NAME=${{ inputs.app-name }}
