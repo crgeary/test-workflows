@@ -35,7 +35,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ../../actions/docker-build/action.yaml
+      - uses: ./actions/docker-build
         with:
           app-name: ${{ needs.prepare.outputs.app-name }}
           app-env: ${{ needs.prepare.outputs.environment }}
