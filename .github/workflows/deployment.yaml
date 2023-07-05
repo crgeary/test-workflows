@@ -147,6 +147,9 @@ jobs:
     env:
       DOCKER_TAG: ${{ needs.build-app.outputs.docker_tags }}
       DOCKER_DIGEST: ${{ needs.build-app.outputs.docker_digest }}
+      DOCKER_MIGRATIONS_TAG: ${{ needs.build-migrations.outputs.docker_tags }}
+      DOCKER_MIGRATIONS_DIGEST: ${{ needs.build-migrations.outputs.docker_digest }}
+      K8S_NAMESPACE: ${{ needs.prepare.outputs.app-name }}
     steps:
       - uses: actions/checkout@v3
       - run: |
