@@ -26,8 +26,8 @@ jobs:
     permissions:
       packages: write
     outputs:
-      docker_tags: ${{ steps.build.outputs.tags }}
-      docker_digest: ${{ steps.build.outputs.digest }}
+      docker-tags: ${{ steps.build.outputs.tags }}
+      docker-digest: ${{ steps.build.outputs.digest }}
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v2
@@ -40,6 +40,7 @@ jobs:
         with:
           app-env: ${{ needs.prepare.outputs.environment }}
           app-name: ${{ needs.prepare.outputs.app-name }}
+          docker-target: production
 
   build-migrations:
     runs-on: ubuntu-latest
@@ -47,8 +48,8 @@ jobs:
     permissions:
       packages: write
     outputs:
-      docker_tags: ${{ steps.build.outputs.tags }}
-      docker_digest: ${{ steps.build.outputs.digest }}
+      docker-tags: ${{ steps.build.outputs.tags }}
+      docker-digest: ${{ steps.build.outputs.digest }}
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v2
@@ -61,7 +62,7 @@ jobs:
         with:
           app-env: ${{ needs.prepare.outputs.environment }}
           app-name: ${{ needs.prepare.outputs.app-name }}
-          target: migrations
+          docker-target: migrations
 
   scan:
     runs-on: ubuntu-latest
@@ -78,7 +79,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ needs.build-app.outputs.docker_tags }}
+          image-ref: ${{ needs.build-app.outputs.docker-tags }}
           format: "sarif"
           output: "trivy-${{ needs.prepare.outputs.environment }}-scan.sarif"
       - uses: github/codeql-action/upload-sarif@v2
@@ -95,10 +96,10 @@ jobs:
       - build-app
       - build-migrations
     env:
-      DOCKER_TAG: ${{ needs.build-app.outputs.docker_tags }}
-      DOCKER_DIGEST: ${{ needs.build-app.outputs.docker_digest }}
-      DOCKER_MIGRATIONS_TAG: ${{ needs.build-migrations.outputs.docker_tags }}
-      DOCKER_MIGRATIONS_DIGEST: ${{ needs.build-migrations.outputs.docker_digest }}
+      DOCKER_TAG: ${{ needs.build-app.outputs.docker-tags }}
+      DOCKER_DIGEST: ${{ needs.build-app.outputs.docker-digest }}
+      DOCKER_MIGRATIONS_TAG: ${{ needs.build-migrations.outputs.docker-tags }}
+      DOCKER_MIGRATIONS_DIGEST: ${{ needs.build-migrations.outputs.docker-digest }}
       K8S_NAMESPACE: ${{ needs.prepare.outputs.app-name }}
     steps:
       - uses: actions/checkout@v3

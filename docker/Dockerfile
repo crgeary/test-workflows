@@ -1,11 +1,11 @@
-FROM node:14.17.3-alpine as migrations
+FROM hello-world as hello
 
 ARG APP_NAME=demo
+
+FROM hello as migrations
 
 CMD ["/hello"]
 
-FROM node:14.17.3-alpine as production
-
-ARG APP_NAME=demo
+FROM hello as production
 
 CMD ["/hello"]

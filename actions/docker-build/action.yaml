@@ -4,10 +4,10 @@ inputs:
     required: true
   app-env:
     required: true
-  dockerfile:
+  docker-target:
+    required: true
+  docker-file:
     default: docker/Dockerfile
-  target:
-    default: production
 outputs:
   tags:
     value: ${{ steps.meta.outputs.tags }}
@@ -19,7 +19,7 @@ runs:
     - id: buildx
       uses: docker/setup-buildx-action@v2
     - id: docker-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ inputs.app-name }}-${{ inputs.app-env }}-${{ github.sha }}
@@ -30,19 +30,19 @@ runs:
       with:
         images: "ghcr.io/crgeary/w-${{ inputs.app-name }}"
         tags: |
-          type=sha,enable=true,prefix=${{ inputs.target == 'migrations' && 'migrations-' || '' }},format=long
+          type=sha,enable=true,prefix=${{ inputs.docker-target == 'migrations' && 'migrations-' || '' }},format=long
         labels: org.opencontainers.image.title=${{ inputs.app-name }}
           org.opencontainers.image.vendor=CrGeary
     - id: build
       uses: docker/build-push-action@v4
       with:
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: ${{ inputs.target == 'production' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
-        target: ${{ inputs.target }}
+        cache-to: ${{ inputs.docker-target == 'production' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
+        target: ${{ inputs.docker-target }}
         build-args: |
           APP_NAME=${{ inputs.app-name }}
         push: true
-        file: ${{ inputs.dockerfile }}
+        file: ${{ inputs.docker-file }}
         context: .
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
