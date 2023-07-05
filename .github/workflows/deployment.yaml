@@ -8,7 +8,7 @@ env:
   APP_NAME: "purple"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ gitub-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -35,37 +35,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/setup-buildx-action@v2
-        id: buildx
-      - uses: actions/cache@v2
-        id: docker-cache
+      - uses: ../../actions/docker-build
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ needs.prepare.outputs.app-name }}-${{ needs.prepare.outputs.environment }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-${{ needs.prepare.outputs.app-name }}-${{ needs.prepare.outputs.environment }}-
-      - uses: docker/metadata-action@v4
-        id: meta
-        with:
-          images: "ghcr.io/crgeary/w-${{ needs.prepare.outputs.app-name }}"
-          tags: |
-            type=sha,enable=true,format=long
-          labels:
-            org.opencontainers.image.title=${{ needs.prepare.outputs.app-name }}
-            org.opencontainers.image.vendor=CrGeary
-      - uses: docker/build-push-action@v4
-        id: build
-        with:
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
-          target: production
-          build-args: |
-            APP_NAME=${{ needs.prepare.outputs.app-name }}
-          push: true
-          file: docker/Dockerfile
-          context: .
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          app-name: ${{ needs.prepare.outputs.app-name }}
+          app-env: ${{ needs.prepare.outputs.environment }}
 
   build-migrations:
     runs-on: ubuntu-latest
