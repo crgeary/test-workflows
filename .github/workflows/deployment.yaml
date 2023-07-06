@@ -5,8 +5,10 @@ on:
     inputs:
       app-name:
         required: true
+        type: string
       environment:
         required: true
+        type: string
 
 env:
   APP_ENV: "production"
