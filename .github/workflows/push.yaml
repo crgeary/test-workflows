@@ -10,6 +10,7 @@ jobs:
       matrix:
         app-name: ["blue", "green", "purple"]
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/workflows/deployment.yaml
         with:
           app-name: ${{ matrix.app-name }}
