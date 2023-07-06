@@ -8,10 +8,10 @@ jobs:
     strategy:
       matrix:
         app-name: ["blue", "green", "purple"]
-      uses: ./.github/workflows/deployment.yaml
-      with:
-        app-name: ${{ matrix.app-name }}
-        environment: "staging"
-      permissions:
-        packages: write
-        security-events: write
+    uses: ./.github/workflows/deployment.yaml
+    with:
+      app-name: ${{ matrix.app-name }}
+      environment: "staging"
+    permissions:
+      packages: write
+      security-events: write
