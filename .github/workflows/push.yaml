@@ -13,6 +13,6 @@ jobs:
         with:
           app-name: ${{ matrix.app-name }}
           environment: "staging"
-        permissions:
-          packages: write
-          security-events: write
+    permissions:
+      packages: write
+      security-events: write
