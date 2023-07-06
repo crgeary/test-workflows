@@ -4,27 +4,15 @@ on:
   push:
 
 jobs:
-  blue:
-    uses: ./.github/workflows/deployment.yaml
-    with:
-      app-name: "blue"
-      environment: "staging"
-    permissions:
-      packages: write
-      security-events: write
-  green:
-    uses: ./.github/workflows/deployment.yaml
-    with:
-      app-name: "green"
-      environment: "staging"
-    permissions:
-      packages: write
-      security-events: write
-  purple:
-    uses: ./.github/workflows/deployment.yaml
-    with:
-      app-name: "purple"
-      environment: "staging"
-    permissions:
-      packages: write
-      security-events: write
+  matrix:
+    strategy:
+      matrix:
+        app-name: ["blue", "green", "purple"]
+      steps:
+        uses: ./.github/workflows/deployment.yaml
+        with:
+          app-name: ${{ matrix.app-name }}
+          environment: "staging"
+        permissions:
+          packages: write
+          security-events: write

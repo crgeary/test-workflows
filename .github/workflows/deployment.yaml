@@ -11,7 +11,7 @@ on:
         type: string
 
 concurrency:
-  group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ inputs.environment }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
