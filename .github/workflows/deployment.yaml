@@ -10,10 +10,6 @@ on:
         required: true
         type: string
 
-env:
-  APP_ENV: "production"
-  APP_NAME: "purple"
-
 concurrency:
   group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,8 +18,8 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ env.APP_ENV }}
-      app-name: ${{ env.APP_NAME }}
+      environment: ${{ inputs.environment }}
+      app-name: ${{ inputs.app-name }}
     steps:
       - run: |
 
