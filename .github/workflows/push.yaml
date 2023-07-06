@@ -9,10 +9,10 @@ jobs:
       matrix:
         app-name: ["blue", "green", "purple"]
       steps:
-        uses: ./.github/workflows/deployment.yaml
-        with:
-          app-name: ${{ matrix.app-name }}
-          environment: "staging"
-        permissions:
-          packages: write
-          security-events: write
+        - uses: ./.github/workflows/deployment.yaml
+          with:
+            app-name: ${{ matrix.app-name }}
+            environment: "staging"
+          permissions:
+            packages: write
+            security-events: write
