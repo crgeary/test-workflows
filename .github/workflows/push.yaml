@@ -5,6 +5,7 @@ on:
 
 jobs:
   matrix:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         app-name: ["blue", "green", "purple"]
