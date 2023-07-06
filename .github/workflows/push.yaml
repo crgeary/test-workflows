@@ -1,0 +1,11 @@
+name: Deployment
+
+on:
+  push:
+
+jobs:
+  prepare:
+    uses: ./.github/workflows/deployment.yaml
+    with:
+      app-name: "purple"
+      environment: "staging"

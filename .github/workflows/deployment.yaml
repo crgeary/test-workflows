@@ -1,14 +1,19 @@
 name: Deployment
 
 on:
-  push:
+  workflow_call:
+    inputs:
+      app-name:
+        required: true
+      environment:
+        required: true
 
 env:
   APP_ENV: "production"
   APP_NAME: "purple"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ inputs.app-name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,11 +41,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - id: build
-        uses: ./actions/docker-build
+        uses: ./.github/actions/docker-build
         with:
-          app-env: ${{ needs.prepare.outputs.environment }}
           app-name: ${{ needs.prepare.outputs.app-name }}
           docker-target: production
+          environment: ${{ needs.prepare.outputs.environment }}
 
   build-migrations:
     runs-on: ubuntu-latest
@@ -58,11 +63,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - id: build
-        uses: ./actions/docker-build
+        uses: ./.github/actions/docker-build
         with:
-          app-env: ${{ needs.prepare.outputs.environment }}
           app-name: ${{ needs.prepare.outputs.app-name }}
           docker-target: migrations
+          environment: ${{ needs.prepare.outputs.environment }}
 
   scan:
     runs-on: ubuntu-latest

@@ -2,10 +2,8 @@ name: "Docker Build"
 inputs:
   app-name:
     required: true
-    description: "Application name (required format: [a-z0-9\\-]+)"
-  app-env:
+  environment:
     required: true
-    description: "Application environment (valid choices: 'production' | 'staging')"
   docker-target:
     required: true
   docker-file:
@@ -24,9 +22,9 @@ runs:
       uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ inputs.app-name }}-${{ inputs.app-env }}-${{ github.sha }}
+        key: ${{ runner.os }}-buildx-${{ inputs.app-name }}-${{ inputs.environment }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-buildx-${{ inputs.app-name }}-${{ inputs.app-env }}-
+          ${{ runner.os }}-buildx-${{ inputs.app-name }}-${{ inputs.environment }}-
     - id: meta
       uses: docker/metadata-action@v4
       with:
