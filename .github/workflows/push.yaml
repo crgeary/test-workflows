@@ -9,3 +9,6 @@ jobs:
     with:
       app-name: "purple"
       environment: "staging"
+    permissions:
+      packages: write
+      security-events: write
