@@ -1,8 +1,12 @@
 name: Deployment
 
 on:
-  push: main
+  push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   diff:
